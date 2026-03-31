@@ -18,3 +18,12 @@ func (s *MemoryStore) Book(b Booking) error {
 	s.bookings[b.SeatID] = b
 	return nil
 }
+
+func (s *MemoryStore) ListBookings(movieId string) []Booking {
+	result := []Booking{}
+	for _, b := range s.bookings {
+		result = append(result, b)
+	}
+
+	return result
+}
