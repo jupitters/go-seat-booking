@@ -1,7 +1,5 @@
 package booking
 
-import "errors"
-
 type MemoryStore struct {
 	bookings map[string]Booking
 }
@@ -14,6 +12,9 @@ func NewMemoryStore() *MemoryStore {
 
 func (s *MemoryStore) Book(b Booking) error {
 	if _, exists := s.bookings[b.SeatID]; exists {
-		return errors.New("seat is already taken")
+		return ErrSeatAlreadyBooked
 	}
+
+	s.bookings[b.SeatID] = b
+	return nil
 }
