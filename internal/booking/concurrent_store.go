@@ -4,13 +4,13 @@ type ConcurrentStore struct {
 	bookings map[string]Booking
 }
 
-func NewConcurrentStore() *MemoryStore {
-	return &MemoryStore{
+func NewConcurrentStore() *ConcurrentStore {
+	return &ConcurrentStore{
 		bookings: map[string]Booking{},
 	}
 }
 
-func (s *MemoryStore) Book(b Booking) error {
+func (s *ConcurrentStore) Book(b Booking) error {
 	if _, exists := s.bookings[b.SeatID]; exists {
 		return ErrSeatAlreadyBooked
 	}
@@ -19,7 +19,7 @@ func (s *MemoryStore) Book(b Booking) error {
 	return nil
 }
 
-func (s *MemoryStore) ListBookings(movieId string) []Booking {
+func (s *ConcurrentStore) ListBookings(movieId string) []Booking {
 	result := []Booking{}
 	for _, b := range s.bookings {
 		result = append(result, b)
