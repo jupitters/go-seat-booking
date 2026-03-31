@@ -1,7 +1,10 @@
 package booking
 
+import "sync"
+
 type ConcurrentStore struct {
 	bookings map[string]Booking
+	sync.RWMutex
 }
 
 func NewConcurrentStore() *ConcurrentStore {
@@ -11,6 +14,9 @@ func NewConcurrentStore() *ConcurrentStore {
 }
 
 func (s *ConcurrentStore) Book(b Booking) error {
+	s.Lock()
+	defer s.Unlock()
+
 	if _, exists := s.bookings[b.SeatID]; exists {
 		return ErrSeatAlreadyBooked
 	}
@@ -20,6 +26,9 @@ func (s *ConcurrentStore) Book(b Booking) error {
 }
 
 func (s *ConcurrentStore) ListBookings(movieId string) []Booking {
+	s.RLock()
+	defer s.RUnlock()
+
 	result := []Booking{}
 	for _, b := range s.bookings {
 		result = append(result, b)
