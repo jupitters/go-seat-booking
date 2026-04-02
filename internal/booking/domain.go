@@ -15,7 +15,7 @@ type Booking struct {
 	SeatID    string
 	UserID    string
 	Status    string
-	ExpiredAt time.Time
+	ExpiresAt time.Time
 }
 
 type BookingStore interface {
