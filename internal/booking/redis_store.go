@@ -53,6 +53,10 @@ func (s *RedisStore) hold(b Booking) (Booking, error) {
 		Mode: "NX",
 		TTL:  defaultHoldTTL,
 	})
+	ok := res.Val() == "OK"
+	if !ok {
+		return Booking{}, ErrSeatAlreadyBooked
+	}
 
 	return Booking{
 		ID:        id,
