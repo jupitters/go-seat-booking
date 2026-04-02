@@ -32,3 +32,7 @@ func (s *RedisStore) Book(b Booking) error {
 
 	return nil
 }
+
+func (s *RedisStore) ListBookings(movieID string) []Booking {
+	return []Booking{}
+}
