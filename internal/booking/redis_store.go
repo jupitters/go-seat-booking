@@ -1,6 +1,7 @@
 package booking
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/redis/go-redis/v9"
@@ -14,4 +15,8 @@ type RedisStore struct {
 
 func NewRedisStore(rdb *redis.Client) *RedisStore {
 	return &RedisStore{rdb: rdb}
+}
+
+func sessionKey(id string) string {
+	return fmt.Sprintf("session:%s", id)
 }
