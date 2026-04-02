@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/google/uuid"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -35,4 +36,18 @@ func (s *RedisStore) Book(b Booking) error {
 
 func (s *RedisStore) ListBookings(movieID string) []Booking {
 	return []Booking{}
+}
+
+func (s *RedisStore) hold(b Booking) (Booking, error) {
+	id := uuid.New().String()
+	now := time.Now()
+
+	return Booking{
+		ID:        id,
+		MovieID:   b.MovieID,
+		SeatID:    b.SeatID,
+		UserID:    b.UserID,
+		Status:    "held",
+		ExpiresAt: now.Add(defaultHoldTTL),
+	}, nil
 }
