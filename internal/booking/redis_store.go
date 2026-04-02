@@ -58,6 +58,8 @@ func (s *RedisStore) hold(b Booking) (Booking, error) {
 		return Booking{}, ErrSeatAlreadyBooked
 	}
 
+	s.rdb.Set(ctx, sessionKey(id), key, defaultHoldTTL)
+
 	return Booking{
 		ID:        id,
 		MovieID:   b.MovieID,
