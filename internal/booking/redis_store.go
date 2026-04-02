@@ -1,6 +1,8 @@
 package booking
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"time"
@@ -41,6 +43,16 @@ func (s *RedisStore) ListBookings(movieID string) []Booking {
 func (s *RedisStore) hold(b Booking) (Booking, error) {
 	id := uuid.New().String()
 	now := time.Now()
+	ctx := context.Background()
+	key := fmt.Sprintf("seat:%s:%s", b.MovieID, b.SeatID)
+
+	b.ID = id
+	val, _ := json.Marshal(b)
+
+	res := s.rdb.SetArgs(ctx, key, val, redis.SetArgs{
+		Mode: "NX",
+		TTL:  defaultHoldTTL,
+	})
 
 	return Booking{
 		ID:        id,
