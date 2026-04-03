@@ -15,6 +15,6 @@ func main() {
 	}
 }
 
-func listMovies(w http.ResponseWriter, r *http.Request) http.HandlerFunc {
+func listMovies(w http.ResponseWriter, r *http.Request) {
 
 }
