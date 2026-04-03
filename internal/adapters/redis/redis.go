@@ -14,4 +14,5 @@ func NewClient(addr string) *goredis.Client {
 	}
 	log.Printf("connected to redis at: %s", addr)
 
+	return rdb
 }
