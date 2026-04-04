@@ -17,6 +17,7 @@ func main() {
 }
 
 func listMovies(w http.ResponseWriter, r *http.Request) {
+	WriteJson(w, http.StatusOK, movies)
 }
 
 func WriteJson(w http.ResponseWriter, status int, v any) {
