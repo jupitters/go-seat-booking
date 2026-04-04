@@ -9,8 +9,8 @@ import (
 type movieResponse struct {
 	ID          string `json:"id"`
 	Title       string `json:"title"`
-	Rows        string `json:"rows"`
-	SeatsPerRow string `json:"seats_per_row"`
+	Rows        int    `json:"rows"`
+	SeatsPerRow int    `json:"seats_per_row"`
 }
 
 func main() {
