@@ -5,8 +5,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/jupitters/go-seat-booking/internal/adapters/redis"
 	"github.com/jupitters/go-seat-booking/internal/booking"
-	"github.com/redis/go-redis/v9"
 )
 
 type movieResponse struct {
