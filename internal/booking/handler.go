@@ -1,9 +1,15 @@
 package booking
 
+import "net/http"
+
 type handler struct {
 	svc *Service
 }
 
-func NewHandler() *handler {
-	return &handler{}
+func NewHandler(svc *Service) *handler {
+	return &handler{svc}
+}
+
+func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
+	h.svc.store.ListBookings()
 }
