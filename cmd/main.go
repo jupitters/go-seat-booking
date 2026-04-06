@@ -4,6 +4,9 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/jupitters/go-seat-booking/internal/booking"
+	"github.com/redis/go-redis/v9"
 )
 
 type movieResponse struct {
@@ -19,6 +22,11 @@ func main() {
 	mux.HandleFunc("GET /movies", listMovies)
 
 	mux.Handle("GET /", http.FileServer(http.Dir("static")))
+
+	store := booking.NewRedisStore(redis.NewClient("localhost:6379"))
+	svc := booking.NewService(store)
+
+	bookinHandler := booking.NewHandler(svc)
 
 	mux.HandleFunc("GET /movies/:movieID/seats")
 
