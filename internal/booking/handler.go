@@ -1,7 +1,7 @@
 package booking
 
 type handler struct {
-	svc Service
+	svc *Service
 }
 
 func NewHandler() *handler {
