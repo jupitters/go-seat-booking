@@ -87,5 +87,15 @@ func (s *RedisStore) hold(b Booking) (Booking, error) {
 }
 
 func parseSession(val string) (Booking, error) {
-
+	var data Booking
+	if err := json.Unmarshal([]byte(val), &data); err != nil {
+		return Booking{}, err
+	}
+	return Booking{
+		ID:      data.ID,
+		MovieID: data.MovieID,
+		SeatID:  data.SeatID,
+		UserID:  data.UserID,
+		Status:  data.Status,
+	}, nil
 }
