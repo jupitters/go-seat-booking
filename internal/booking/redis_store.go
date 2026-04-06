@@ -85,3 +85,7 @@ func (s *RedisStore) hold(b Booking) (Booking, error) {
 		ExpiresAt: now.Add(defaultHoldTTL),
 	}, nil
 }
+
+func parseSession(val string) (Booking, error) {
+
+}
