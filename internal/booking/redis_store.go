@@ -54,6 +54,8 @@ func (s *RedisStore) ListBookings(movieID string) []Booking {
 		}
 		sessions = append(sessions, session)
 	}
+
+	return sessions
 }
 
 func (s *RedisStore) hold(b Booking) (Booking, error) {
