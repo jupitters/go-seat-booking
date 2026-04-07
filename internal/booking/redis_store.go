@@ -102,14 +102,14 @@ func parseSession(val string) (Booking, error) {
 	}, nil
 }
 
-func (s *RedisStore) Confirm(ctx context.Context, sesionID string, userID string) (Booking, error) {
+func (s *RedisStore) Confirm(ctx context.Context, sessionID string, userID string) (Booking, error) {
 	session, sk, err := s.getSession(ctx, sessionID, userID)
 	if err != nil {
 		return Booking{}, err
 	}
 
 	s.rdb.Persist(ctx, sk)
-	s.rdb.Persist(ctx, sessionKey(sesionID))
+	s.rdb.Persist(ctx, sessionKey(sessionID))
 
 	session.Status = "confirmed"
 	data := Booking{
