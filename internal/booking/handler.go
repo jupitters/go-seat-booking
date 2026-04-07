@@ -30,3 +30,9 @@ func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJson(w, http.StatusOK, seats)
 }
+
+type seatInfo struct {
+	SeatID string `json:"seat_id"`
+	UserID string `json:"user_id"`
+	Booked bool   `json:"booked"`
+}
