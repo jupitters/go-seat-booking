@@ -52,7 +52,7 @@ func (h *handler) HoldSeat(w http.ResponseWriter, r *http.Request) {
 
 	utils.WriteJson(w, http.StatusCreated, holdResponse{
 		SeatID:    seatID,
-		MovieID:   session.movieID,
+		MovieID:   session.MovieID,
 		SessionID: session.ID,
 		ExpiresAt: session.ExpiresAt.Format(time.RFC3339),
 	})
