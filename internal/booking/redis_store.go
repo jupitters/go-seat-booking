@@ -143,3 +143,13 @@ func (s *RedisStore) getSession(ctx context.Context, sessionID string, userID st
 
 	return session, sk, nil
 }
+
+func (s *RedisStore) Release(ctx context.Context, sessionID string, userID string) error {
+	_, sk, err := s.getSession(ctx, sessionID, userID)
+	if err != nil {
+		return err
+	}
+
+	s.rdb.Del(ctx, sk, sessionKey(sessionID))
+	return nil
+}
