@@ -14,6 +14,13 @@ func NewHandler(svc *Service) *handler {
 	return &handler{svc}
 }
 
+func (h *handler) HoldSeat(w http.ResponseWriter, r *http.Request) {
+	movieID := r.PathValue("movieID")
+	seatID := r.PathValue("seatID")
+
+	h.svc.Book(Booking{})
+}
+
 func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
 	movieID := r.PathValue("movieID")
 
