@@ -107,6 +107,22 @@ func (s *RedisStore) Confirm(ctx context.Context, sesionID string, userID string
 	if err != nil {
 		return Booking{}, err
 	}
+
+	s.rdb.Persist(ctx, sk)
+	s.rdb.Persist(ctx, sessionKey(sesionID))
+
+	session.Status = "confirmed"
+	data := Booking{
+		ID:      session.ID,
+		MovieID: string(session.MovieID),
+		SeatID:  session.SeatID,
+		UserID:  session.UserID,
+		Status:  "confirmed",
+	}
+	val, _ := json.Marshal(data)
+	s.rdb.Set(ctx, sk, val, 0)
+
+	return session, nil
 }
 
 func getSession(ctx context.Context, sesionID string, userID string) (Booking, string, error) {
