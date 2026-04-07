@@ -36,7 +36,11 @@ func (h *handler) HoldSeat(w http.ResponseWriter, r *http.Request) {
 		SeatID:  seatID,
 	}
 
-	h.svc.Book(data)
+	err := h.svc.Book(data)
+	if err != nil {
+		log.Println(err)
+		return
+	}
 }
 
 func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
