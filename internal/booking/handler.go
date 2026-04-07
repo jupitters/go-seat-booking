@@ -108,7 +108,7 @@ func (h *handler) ConfirmSession(w http.ResponseWriter, r *http.Request) {
 	utils.WriteJson(w, http.StatusOK, sessionResponse{
 		SessionID: session.ID,
 		MovieID:   session.MovieID,
-		SeatID:    session.SeatId,
+		SeatID:    session.SeatID,
 		UserID:    req.UserID,
 		Status:    session.Status,
 	})
