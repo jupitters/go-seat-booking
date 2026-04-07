@@ -29,6 +29,10 @@ func main() {
 	bookinHandler := booking.NewHandler(svc)
 
 	mux.HandleFunc("GET /movies/{movieID}/seats", bookinHandler.ListSeats)
+	mux.HandleFunc("POST /movies/{movieID}/seats/{seatID}/hold", bookinHandler.HoldSeat)
+
+	mux.HandleFunc("PUT /sessions/{sessionID}/confirm", bookinHandler.ConfirmSession)
+	mux.HandleFunc("DELETE /sessions/{sessionID}", bookinHandler.ReleaseSession)
 
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)
