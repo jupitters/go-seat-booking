@@ -74,9 +74,10 @@ func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
 	seats := make([]seatInfo, 0, len(bookings))
 	for _, b := range bookings {
 		seats = append(seats, seatInfo{
-			SeatID: b.SeatID,
-			UserID: b.UserID,
-			Booked: true,
+			SeatID:    b.SeatID,
+			UserID:    b.UserID,
+			Booked:    true,
+			Confirmed: b.Status == "confirmed",
 		})
 	}
 
@@ -84,9 +85,10 @@ func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
 }
 
 type seatInfo struct {
-	SeatID string `json:"seat_id"`
-	UserID string `json:"user_id"`
-	Booked bool   `json:"booked"`
+	SeatID    string `json:"seat_id"`
+	UserID    string `json:"user_id"`
+	Booked    bool   `json:"booked"`
+	Confirmed string `json:"confirmed"`
 }
 
 func (h *handler) ConfirmSession(w http.ResponseWriter, r *http.Request) {
