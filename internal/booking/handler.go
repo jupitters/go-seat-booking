@@ -17,12 +17,19 @@ func NewHandler(svc *Service) *handler {
 }
 
 func (h *handler) HoldSeat(w http.ResponseWriter, r *http.Request) {
-	movieID := r.PathValue("movieID")
-	seatID := r.PathValue("seatID")
-
 	type holdRequest struct {
 		UserID string `json:"user_id"`
 	}
+
+	type holdResponse struct {
+		SessionID string `json:"session_id"`
+		MovieID   string `json:"movie_id"`
+		SeatID    string `json:"movie_id"`
+		ExpiresAt string `json:"expires_at"`
+	}
+
+	movieID := r.PathValue("movieID")
+	seatID := r.PathValue("seatID")
 
 	var req holdRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
