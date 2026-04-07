@@ -1,12 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
 
 	"github.com/jupitters/go-seat-booking/internal/adapters/redis"
 	"github.com/jupitters/go-seat-booking/internal/booking"
+	"github.com/jupitters/go-seat-booking/internal/utils"
 )
 
 type movieResponse struct {
@@ -28,7 +28,7 @@ func main() {
 
 	bookinHandler := booking.NewHandler(svc)
 
-	mux.HandleFunc("GET /movies/:movieID/seats")
+	mux.HandleFunc("GET /movies/:movieID/seats", bookinHandler.ListSeats)
 
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)
@@ -41,11 +41,5 @@ var movies = []movieResponse{
 }
 
 func listMovies(w http.ResponseWriter, r *http.Request) {
-	WriteJson(w, http.StatusOK, movies)
-}
-
-func WriteJson(w http.ResponseWriter, status int, v any) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(status)
-	json.NewEncoder(w).Encode(v)
+	utils.WriteJson(w, http.StatusOK, movies)
 }
