@@ -126,7 +126,7 @@ func (h *handler) ReleaseSession(w http.ResponseWriter, r *http.Request) {
 	if req.UserID == "" {
 		return
 	}
-	session, err := h.svc.ReleaseSeat(r.Context(), sessionID, req.UserID)
+	err := h.svc.ReleaseSeat(r.Context(), sessionID, req.UserID)
 	if err != nil {
 		log.Println(err)
 		return
