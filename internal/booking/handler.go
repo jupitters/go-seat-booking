@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/jupitters/go-seat-booking/internal/utils"
 )
@@ -24,7 +25,7 @@ func (h *handler) HoldSeat(w http.ResponseWriter, r *http.Request) {
 	type holdResponse struct {
 		SessionID string `json:"session_id"`
 		MovieID   string `json:"movie_id"`
-		SeatID    string `json:"movie_id"`
+		SeatID    string `json:"seat_id"`
 		ExpiresAt string `json:"expires_at"`
 	}
 
@@ -43,11 +44,18 @@ func (h *handler) HoldSeat(w http.ResponseWriter, r *http.Request) {
 		SeatID:  seatID,
 	}
 
-	err := h.svc.Book(data)
+	session, err := h.svc.Book(data)
 	if err != nil {
 		log.Println(err)
 		return
 	}
+
+	utils.WriteJson(w, http.StatusCreated, holdResponse{
+		SeatID:    seatID,
+		MovieID:   session.movieID,
+		SessionID: session.ID,
+		ExpiresAt: session.ExpiresAt.Format(time.RFC3339),
+	})
 }
 
 func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
