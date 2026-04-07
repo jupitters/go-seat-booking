@@ -101,3 +101,14 @@ func parseSession(val string) (Booking, error) {
 		Status:  data.Status,
 	}, nil
 }
+
+func (s *RedisStore) Confirm(ctx context.Context, sesionID string, userID string) (Booking, error) {
+	session, sk, err := s.getSession(ctx, sessionID, userID)
+	if err != nil {
+		return Booking{}, err
+	}
+}
+
+func getSession(ctx context.Context, sesionID string, userID string) (Booking, string, error) {
+
+}
