@@ -125,7 +125,7 @@ func (s *RedisStore) Confirm(ctx context.Context, sessionID string, userID strin
 	return session, nil
 }
 
-func (s *RedisStore) getSession(ctx context.Context, sesionID string, userID string) (Booking, string, error) {
+func (s *RedisStore) getSession(ctx context.Context, sessionID string, userID string) (Booking, string, error) {
 	sk, err := s.rdb.Get(ctx, sessionKey(sessionID)).Result()
 	if err != nil {
 		return Booking{}, "", err
