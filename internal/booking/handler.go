@@ -1,6 +1,8 @@
 package booking
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/jupitters/go-seat-booking/internal/utils"
@@ -18,7 +20,23 @@ func (h *handler) HoldSeat(w http.ResponseWriter, r *http.Request) {
 	movieID := r.PathValue("movieID")
 	seatID := r.PathValue("seatID")
 
-	h.svc.Book(Booking{})
+	type holdRequest struct {
+		UserID string `json:"user_id"`
+	}
+
+	var req holdRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		log.Println(err)
+		return
+	}
+
+	data := Booking{
+		UserID:  req.UserID,
+		MovieID: movieID,
+		SeatID:  seatID,
+	}
+
+	h.svc.Book(data)
 }
 
 func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
