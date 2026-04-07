@@ -1,6 +1,10 @@
 package booking
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/jupitters/go-seat-booking/internal/utils"
+)
 
 type handler struct {
 	svc *Service
@@ -11,5 +15,9 @@ func NewHandler(svc *Service) *handler {
 }
 
 func (h *handler) ListSeats(w http.ResponseWriter, r *http.Request) {
-	h.svc.store.ListBookings()
+	movieID := r.PathValue("movieID")
+
+	h.svc.store.ListBookings(movieID)
+
+	utils.WriteJson(w, http.StatusOK, seats)
 }
