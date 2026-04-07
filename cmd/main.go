@@ -28,7 +28,7 @@ func main() {
 
 	bookinHandler := booking.NewHandler(svc)
 
-	mux.HandleFunc("GET /movies/:movieID/seats", bookinHandler.ListSeats)
+	mux.HandleFunc("GET /movies/{movieID}/seats", bookinHandler.ListSeats)
 
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		log.Fatal(err)
