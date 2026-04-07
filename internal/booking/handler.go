@@ -88,7 +88,7 @@ type seatInfo struct {
 	SeatID    string `json:"seat_id"`
 	UserID    string `json:"user_id"`
 	Booked    bool   `json:"booked"`
-	Confirmed string `json:"confirmed"`
+	Confirmed bool   `json:"confirmed"`
 }
 
 func (h *handler) ConfirmSession(w http.ResponseWriter, r *http.Request) {
