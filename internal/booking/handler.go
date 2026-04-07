@@ -13,26 +13,34 @@ type handler struct {
 	svc *Service
 }
 
+type holdSeatRequest struct {
+	UserID string `json:"user_id"`
+}
+
+type holdResponse struct {
+	SessionID string `json:"session_id"`
+	MovieID   string `json:"movie_id"`
+	SeatID    string `json:"seat_id"`
+	ExpiresAt string `json:"expires_at"`
+}
+
+type sessionResponse struct {
+	SessionID string `json:"session_id"`
+	MovieID   string `json:"movie_id"`
+	SeatID    string `json:"seat_id"`
+	UserID    string `json:"user_id"`
+	Status    string `json:"status"`
+}
+
 func NewHandler(svc *Service) *handler {
 	return &handler{svc}
 }
 
 func (h *handler) HoldSeat(w http.ResponseWriter, r *http.Request) {
-	type holdRequest struct {
-		UserID string `json:"user_id"`
-	}
-
-	type holdResponse struct {
-		SessionID string `json:"session_id"`
-		MovieID   string `json:"movie_id"`
-		SeatID    string `json:"seat_id"`
-		ExpiresAt string `json:"expires_at"`
-	}
-
 	movieID := r.PathValue("movieID")
 	seatID := r.PathValue("seatID")
 
-	var req holdRequest
+	var req holdSeatRequest
 	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 		log.Println(err)
 		return
@@ -79,4 +87,30 @@ type seatInfo struct {
 	SeatID string `json:"seat_id"`
 	UserID string `json:"user_id"`
 	Booked bool   `json:"booked"`
+}
+
+func (h *handler) ConfirmSession(w http.ResponseWriter, r *http.Request) {
+	sessionID := r.PathValue("sessionID")
+
+	var req holdSeatRequest
+	if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
+		return
+	}
+
+	if req.UserID == "" {
+		return
+	}
+	session, err := h.svc.ConfirmSeat(r.Context(), sessionID, req.UserID)
+	if err != nil {
+		return
+	}
+
+	utils.WriteJson(w, http.StatusOK, sessionResponse{
+		SessionID: session.ID,
+		MovieID:   session.MovieID,
+		SeatID:    session.SeatId,
+		UserID:    req.UserID,
+		Status:    session.Status,
+	})
+
 }
